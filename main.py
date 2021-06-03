@@ -7,7 +7,7 @@ DOMAIN_NAME = '.mihoyo.com'
 
 
 def getCookies():
-    cookies = browser_cookie3.chrome(domain_name=DOMAIN_NAME)
+    cookies = browser_cookie3.firefox(domain_name=DOMAIN_NAME)
     return cookies
 
 def getStatus(cookies):
@@ -22,7 +22,7 @@ def getStatus(cookies):
 
     params = (
         ('lang', 'vi-vn'),
-        ('act_id', ACT_ID),
+        ('act_id', ACT_ID)
     )
 
     try:
@@ -43,23 +43,24 @@ def claimReward(cookies):
          'Referer': f'https://webstatic-sea.mihoyo.com/ys/event/signin-sea/index.html?act_id={ACT_ID}&lang=vi-vn',
     }
 
+
     params = (('lang', 'vi-vn'),)
 
-    json =  {'act_id': ACT_ID}
+
+    json =  { 'act_id': ACT_ID }
 
     try:
-        response = requests.get('https://hk4e-api-os.mihoyo.com/event/sol/sign',
-                               headers=headers, params=params,
-                               cookies=cookies, json=json)
+        response = requests.post('https://hk4e-api-os.mihoyo.com/event/sol/sign',
+                                headers=headers, params=params,
+                                cookies=cookies, json=json)
         return response.json()
 
     except Exception as e:
-         print("Error: ", e)
-         return None
-
+        print("Error: ", e)
+        return None
 
 if __name__ == '__main__':
     cookies = getCookies()
     response = getStatus(cookies)
     if not response['data']['is_sign']:
-        claimReward(response)
+        response = claimReward(cookies)
