@@ -10,6 +10,7 @@ def getCookies():
     cookies = browser_cookie3.firefox(domain_name=DOMAIN_NAME)
     return cookies
 
+
 def getStatus(cookies):
     headers = {
         'Accept': 'application/json, text/plain, */*',
@@ -29,9 +30,11 @@ def getStatus(cookies):
         response = requests.get('https://hk4e-api-os.mihoyo.com/event/sol/info',
                                 headers=headers, params=params, cookies=cookies)
         return response.json()
+
     except Exception as e:
         print("Error: ", e)
         return None
+
 
 def claimReward(cookies):
     headers = {
@@ -58,6 +61,7 @@ def claimReward(cookies):
     except Exception as e:
         print("Error: ", e)
         return None
+
 
 if __name__ == '__main__':
     cookies = getCookies()
