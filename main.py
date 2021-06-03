@@ -7,10 +7,10 @@ DOMAIN_NAME = '.mihoyo.com'
 
 
 def getCookies():
-    cookies = browser_cookie3.firefox(domain_name=DOMAIN_NAME)
+    cookies = browser_cookie3.chrome(domain_name=DOMAIN_NAME)
     return cookies
 
-def getStatus():
+def getStatus(cookies):
     headers = {
         'Accept': 'application/json, text/plain, */*',
         'Accept-Language': 'vi-VN,vi;q=0.5',
@@ -24,15 +24,42 @@ def getStatus():
         ('lang', 'vi-vn'),
         ('act_id', ACT_ID),
     )
-    cookies = getCookies()
 
     try:
-        response = requests.get('https://hk4e-api-os.mihoyo.com/event/sol/info', headers=headers, params=params, cookies=cookies)
+        response = requests.get('https://hk4e-api-os.mihoyo.com/event/sol/info',
+                                headers=headers, params=params, cookies=cookies)
         return response.json()
     except Exception as e:
         print("Error: ", e)
-        print(e)
         return None
 
-response = json.dumps(getStatus(), indent=4)
-print(response)
+def claimReward(cookies):
+    headers = {
+         'Accept': 'application/json, text/plain, */*',
+         'Accept-Language': 'vi-VN,vi;q=0.5',
+         'Content-Type': 'application/json;charset=utf-8',
+         'Origin': 'https://webstatic-sea.mihoyo.com',
+         'Connection': 'keep-alive',
+         'Referer': f'https://webstatic-sea.mihoyo.com/ys/event/signin-sea/index.html?act_id={ACT_ID}&lang=vi-vn',
+    }
+
+    params = (('lang', 'vi-vn'),)
+
+    json =  {'act_id': ACT_ID}
+
+    try:
+        response = requests.get('https://hk4e-api-os.mihoyo.com/event/sol/sign',
+                               headers=headers, params=params,
+                               cookies=cookies, json=json)
+        return response.json()
+
+    except Exception as e:
+         print("Error: ", e)
+         return None
+
+
+if __name__ == '__main__':
+    cookies = getCookies()
+    response = getStatus(cookies)
+    if not response['data']['is_sign']:
+        claimReward(response)
