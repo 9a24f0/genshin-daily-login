@@ -1,14 +1,22 @@
-import requests
+import argparse
 import browser_cookie3
+import dill
 import json
+import requests
 
 ACT_ID = 'e202102251931481'
 DOMAIN_NAME = '.mihoyo.com'
 
 
-def getCookies():
-    cookies = browser_cookie3.firefox(domain_name=DOMAIN_NAME)
-    return cookies
+def getCookies(browser):
+    if browser.lower() == 'chrome':
+        return browser_cookie3.chrome(domain_name=DOMAIN_NAME)
+    elif browser.lower() == 'firefox':
+        return browser_cookie3.firefox(domain_name=DOMAIN_NAME)
+    elif browser.lower() == 'edge':
+        return browser_cookie3.edge(domain_name=DOMAIN_NAME)
+    else:
+        return None
 
 
 def getStatus(cookies):
@@ -63,8 +71,27 @@ def claimReward(cookies):
         return None
 
 
+def encodeCookie(dict_):
+    output = {}
+    for key in dict_:
+        output.update({key.encode('utf-8'): dict_[key].encode('utf-8')})
+    return output
+
+
 if __name__ == '__main__':
-    cookies = getCookies()
+    parser = argparse.ArgumentParser(formatter_class=argparse.RawTextHelpFormatter)
+    parser.add_argument("--browser",
+        help='Set the browser that you use to claim daily reward\nCurrently only supports Chrome, Firefox and Edge')
+    args = parser.parse_args()
+
+    if (args.browser is not None):
+        cookies = getCookies(str(args.browser))
+        with open('cookie', 'wb') as file:
+            dill.dump(obj=cookies, file=file)
+    else:
+        with open('cookie', 'rb') as file:
+            cookies = dill.load(file)
+
     response = getStatus(cookies)
     if not response['data']['is_sign']:
         response = claimReward(cookies)
