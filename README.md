@@ -36,10 +36,19 @@ cd YOUR_COPIED_PATH
 pip install -r requirements.txt
 ```
 
+## Save cookie for using when start up
+In PowerShell, run:
+```
+py main.py --browser=(The browser that you use for login HoyoLab)
+```
+Please specifies the browser that has already used to claim daily reward, current version supports only FireFox, Chrome and Edge.
+This command allows to dump cookie to a file for later bootup use
+
 ## Setup your batch file
 Right click on `startup.bat`, select `Open with...` and select Notepad. You will get the content of the file as:
 ```
-"Path where your Python exe is stored\python.exe" "YOUR_COPIED_PATH\main.py"
+cd "YOUR_COPIED_PATH"
+"Path where your Python exe is stored\python.exe" "main.py"
 pause
 ```
 First thing to do is to replace `YOUR_COPIED_PATH` with the path to the repo's folder which you are just copied from the step above.
