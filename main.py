@@ -25,7 +25,7 @@ def getStatus(cookies):
         'Accept-Language': 'vi-VN,vi;q=0.5',
         'Origin': 'https://webstatic-sea.mihoyo.com',
         'Connection': 'keep-alive',
-        'Referer': f'https://webstatic-sea.mihoyo.com/ys/event/signin-sea/index.html?act_id={ACT_ID}&lang=vi-vn',
+        'Referer': f'https://webstatic-sea.mihoyo.com/ys/event/signin-sea/index.html?act_id={ACT_ID}',
         'Cache-Control': 'max-age=0',
    }
 
@@ -51,7 +51,7 @@ def claimReward(cookies):
          'Content-Type': 'application/json;charset=utf-8',
          'Origin': 'https://webstatic-sea.mihoyo.com',
          'Connection': 'keep-alive',
-         'Referer': f'https://webstatic-sea.mihoyo.com/ys/event/signin-sea/index.html?act_id={ACT_ID}&lang=vi-vn',
+         'Referer': f'https://webstatic-sea.mihoyo.com/ys/event/signin-sea/index.html?act_id={ACT_ID}',
     }
 
 
